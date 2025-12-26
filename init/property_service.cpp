@@ -1378,8 +1378,9 @@ static void SetSafetyNetProps() {
 
     // Bail out if this is recovery, fastbootd, or anything other than a normal boot.
     // fastbootd, in particular, needs the real values so it can allow flashing on
-    // unlocked bootloaders.
-    if (!isNormalBoot) {
+    // unlocked bootloaders. Also do the same if the bootloader isn't unlocked.
+    if (!isNormalBoot ||
+        android::base::GetProperty("ro.boot.verifiedbootstate", "") != "orange") {
         return;
     }
 
